@@ -5,6 +5,7 @@ import {
 	ProductInfoWrapper,
 } from "@/pages/product/ProductManage";
 import {
+	MoreButton,
 	ProductContainer,
 	ProductList,
 	ProductSection,
@@ -190,6 +191,26 @@ export function ProductPurchaseSkeleton() {
 					<Skeleton variant="rounded" width={200} height={80} />
 				</FlexLayout>
 			</ProductInfoWrapper>
+		</Box>
+	);
+}
+
+export function ProductListSkeleton() {
+	return (
+		<Box sx={{ width: "100%" }}>
+			<ProductContainer height="633px">
+				<ProductList>
+					<Skeleton variant="rounded" width={1140} height={64} />
+					<Skeleton variant="rounded" width={1140} height={64} />
+					<Skeleton variant="rounded" width={1140} height={64} />
+					<Skeleton variant="rounded" width={1140} height={64} />
+					<Skeleton variant="rounded" width={1140} height={64} />
+					<Skeleton variant="rounded" width={1140} height={64} />
+					<Skeleton variant="rounded" width={1140} height={64} />
+					<Skeleton variant="rounded" width={1140} height={64} />
+				</ProductList>
+				<MoreButton>더보기</MoreButton>
+			</ProductContainer>
 		</Box>
 	);
 }
