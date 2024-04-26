@@ -4,26 +4,27 @@ import HelmetSetup from "@/components/HelmetSetup";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import SelectGenre from "@/components/SelectGenre";
 import Textarea from "@/components/Textarea";
+
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { currentUserState } from "@/states/authState";
 import { codeState } from "@/states/categoryState";
+
 import { Common } from "@/styles/common";
-import { axiosInstance, debounce } from "@/utils";
-import { uploadFile } from "@/utils/uploadFile";
+
+import { axiosInstance, debounce, uploadFile } from "@/utils";
+
 import styled from "@emotion/styled";
 import CircleIcon from "@mui/icons-material/Circle";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { Radio, RadioProps } from "@mui/material";
 import { styled as muiStyled } from "@mui/system";
+
 import { useState } from "react";
 import toast, { Renderable, Toast, ValueFunction } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-
-interface FlexLayoutProps {
-	right?: boolean;
-}
+import { FlexLayout, FormTopLayout, FormTopRightLayout } from "./ProductManage";
 
 interface ProductRegistForm {
 	show: boolean;
@@ -64,12 +65,6 @@ const ProductRegistSection = styled.section`
 		flex-direction: column;
 		gap: ${Common.space.spacingXl};
 	}
-`;
-
-const FormTopLayout = styled.div`
-	width: 1248px;
-	display: flex;
-	gap: ${Common.space.spacingLg};
 `;
 
 const PostImageWrapper = styled.div`
@@ -137,20 +132,6 @@ const PostAudioWrapper = styled.div`
 		left: 50%;
 		transform: translate(-50%, 270%);
 	}
-`;
-
-const FormTopRightLayout = styled.div`
-	display: flex;
-	flex: 1;
-	flex-direction: column;
-	gap: ${Common.space.spacingLg};
-	width: 918px;
-`;
-
-const FlexLayout = styled.div<FlexLayoutProps>`
-	display: flex;
-	gap: ${Common.space.spacingXl};
-	${(props) => props.right && "justify-content: flex-end;"}
 `;
 
 const ProductRadioButtonWrapper = styled.div`
@@ -233,6 +214,16 @@ function ProductRegistration() {
 			return;
 		}
 
+		if (postItem.extra.category === "") {
+			toast.error("장르를 선택해 주세요.", {
+				ariaProps: {
+					role: "status",
+					"aria-live": "polite",
+				},
+			});
+			return;
+		}
+
 		try {
 			axiosInstance
 				.post(`/seller/products`, postItem)
@@ -246,7 +237,8 @@ function ProductRegistration() {
 
 					if (response.status === 200) {
 						const productId = response.data.item._id;
-						navigate(`/productmanage/${productId}`);
+						console.log(response.data);
+						// navigate(`/productmanage/${productId}`);
 					}
 
 					localStorage.removeItem("userProductsInfo");
@@ -263,7 +255,9 @@ function ProductRegistration() {
 	}
 
 	function handleRegistCancel() {
-		const result = confirm("정말로 등록을 취소하시겠습니까?");
+		const result = confirm(
+			"페이지를 나가시면 음원 정보가 모두 사라지게 됩니다. 정말로 등록을 취소하시겠습니까?",
+		);
 		if (result) {
 			navigate(-1);
 		}
@@ -403,6 +397,7 @@ function ProductRegistration() {
 						name="price"
 						label="가격"
 						type="number"
+						placeholder="0 "
 						handleFn={debounce((e: { target: { value: number } }) => {
 							if (e.target.value < 0) {
 								e.target.value = 0;
