@@ -237,8 +237,7 @@ function ProductRegistration() {
 
 					if (response.status === 200) {
 						const productId = response.data.item._id;
-						console.log(response.data);
-						// navigate(`/productmanage/${productId}`);
+						navigate(`/productmanage/${productId}`);
 					}
 
 					localStorage.removeItem("userProductsInfo");
