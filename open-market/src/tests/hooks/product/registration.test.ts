@@ -1,10 +1,10 @@
 import { postProductDetail } from "@/apis/product/product";
 import { usePostProductMutation } from "@/hooks/product/mutations/registration";
+import TestWrapper from "@/tests/Wrapper";
 import { renderHook, waitFor } from "@testing-library/react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { MockInstance, vi } from "vitest";
-import TestWrapper from "../Wrapper";
 
 vi.mock("react-router-dom", () => ({
 	...vi.importActual("react-router-dom"),
